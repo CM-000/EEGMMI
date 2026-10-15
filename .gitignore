@@ -19,3 +19,6 @@ Thumbs.db
 
 # Docker
 *.log
+
+# Local helper scripts
+*.bat

@@ -1,1 +1,5 @@
 mne
+scikit-learn
+numpy
+scipy
+matplotlib
