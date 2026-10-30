@@ -51,3 +51,47 @@ def load_eeg_runs(
         raw.pick([ch.upper() for ch in pick_channels])
 
     return raw
+
+def load_eeg_dataset(
+    root_path: str,
+    subjects: list,
+    runs: list,
+    montage_name="standard_1005",
+    pick_channels=None
+):
+    all_raws = []
+
+    for subject in subjects:
+        for run in runs:
+
+            file_path = (
+                Path(root_path)
+                / subject
+                / f"{subject}{run}.edf"
+            )
+
+            print(f"Loading: {file_path}")
+
+            raw = mne.io.read_raw_edf(
+                file_path,
+                preload=True
+            )
+
+            raw.rename_channels(
+                lambda name: name.replace(".", "").upper()
+            )
+
+            all_raws.append(raw)
+
+    # Concatenate all subjects and runs
+    raw = mne.concatenate_raws(all_raws)
+
+    # Apply montage
+    montage = mne.channels.make_standard_montage(montage_name)
+    raw.set_montage(montage, on_missing="ignore")
+
+    # Optional channel selection
+    if pick_channels is not None:
+        raw.pick([ch.upper() for ch in pick_channels])
+
+    return raw
