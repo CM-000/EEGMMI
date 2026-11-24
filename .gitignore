@@ -10,6 +10,9 @@ env/
 # Dataset
 physionet.org/
 
+# Results
+results/*.xlsx
+
 # IDE
 .vscode/
 
